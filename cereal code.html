@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,20 +16,23 @@
                 window.location.href = "https://example.com"; // Change to your desired URL
             } else if (decodedText.trim() === "772041") {
                 window.location.href = "https://store.supercell.com/brawlstars?storeCode=1SQPN7BN2ZO7&storeCampaign=VALENTINES_DAY_2025"; // Change to a different URL
+            } else if (decodedText.trim() === "20802") {
+                window.location.href = "https://yetanotherexample.com"; // Change to another different URL
             } else {
                 alert("Invalid QR Code: " + decodedText);
             }
-        }document.getElementById('qr-input-file').addEventListener('change', function(event) {
-        if (event.target.files.length === 0) {
-            return;
         }
-        const imageFile = event.target.files[0];
-        const qrCodeScanner = new Html5Qrcode("qr-reader");
-        qrCodeScanner.scanFile(imageFile, false)
-            .then(onScanSuccess)
-            .catch(err => alert("QR Code not detected."));
-    });
-</script>
 
+        document.getElementById('qr-input-file').addEventListener('change', function(event) {
+            if (event.target.files.length === 0) {
+                return;
+            }
+            const imageFile = event.target.files[0];
+            const qrCodeScanner = new Html5Qrcode("qr-reader");
+            qrCodeScanner.scanFile(imageFile, false)
+                .then(onScanSuccess)
+                .catch(err => alert("QR Code not detected."));
+        });
+    </script>
 </body>
 </html>
