@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>QR Code Scanner</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
@@ -14,21 +13,22 @@
         function onScanSuccess(decodedText) {
             if (decodedText.trim() === "50522") {
                 window.location.href = "https://example.com"; // Change to your desired URL
+            } else if (decodedText.trim() === "772041") {
+                window.location.href = "https://anotherexample.com"; // Change to a different URL
             } else {
                 alert("Invalid QR Code: " + decodedText);
             }
+        }document.getElementById('qr-input-file').addEventListener('change', function(event) {
+        if (event.target.files.length === 0) {
+            return;
         }
+        const imageFile = event.target.files[0];
+        const qrCodeScanner = new Html5Qrcode("qr-reader");
+        qrCodeScanner.scanFile(imageFile, false)
+            .then(onScanSuccess)
+            .catch(err => alert("QR Code not detected."));
+    });
+</script>
 
-        document.getElementById('qr-input-file').addEventListener('change', function(event) {
-            if (event.target.files.length === 0) {
-                return;
-            }
-            const imageFile = event.target.files[0];
-            const qrCodeScanner = new Html5Qrcode("qr-reader");
-            qrCodeScanner.scanFile(imageFile, false)
-                .then(onScanSuccess)
-                .catch(err => alert("QR Code not detected."));
-        });
-    </script>
 </body>
 </html>
