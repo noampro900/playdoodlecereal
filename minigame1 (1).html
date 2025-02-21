@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game</title>
+    <style>
+        body {
+            background-color: blue;
+            margin: 0;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        #player {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 0;
+            left: 50px;
+            cursor: pointer;
+        }
+        .block {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <img id="player" src="https://via.placeholder.com/50">
+    </div>
+    <script>
+        let gameContainer = document.getElementById('game-container');
+        let player = document.getElementById('player');
+        let isTop = true;
+        let gameRunning = true;
+        let collisionTimeout;function teleportPlayer() {
+        if (!gameRunning) return;
+        isTop = !isTop;
+        player.style.top = isTop ? '0px' : (window.innerHeight - 50) + 'px';
+        clearTimeout(collisionTimeout);
+        collisionTimeout = null;
+        checkCollision();
+    }
+
+    function createBlock() {
+        if (!gameRunning) return;
+        let block = document.createElement('div');
+        block.classList.add('block');
+        block.style.left = Math.random() * window.innerWidth + 'px';
+        block.style.top = Math.random() > 0.5 ? '0px' : (window.innerHeight - 50) + 'px';
+        gameContainer.appendChild(block);
+        
+        setTimeout(() => { block.remove(); }, 3000);
+    }
+
+    function checkCollision() {
+        let blocks = document.querySelectorAll('.block');
+        let playerRect = player.getBoundingClientRect();
+        let isColliding = false;
+
+        blocks.forEach(block => {
+            let blockRect = block.getBoundingClientRect();
+            if (
+                playerRect.left < blockRect.right &&
+                playerRect.right > blockRect.left &&
+                playerRect.top < blockRect.bottom &&
+                playerRect.bottom > blockRect.top
+            ) {
+                isColliding = true;
+                if (!collisionTimeout) {
+                    collisionTimeout = setTimeout(() => {
+                        if (isColliding && gameRunning) {
+                            gameRunning = false;
+                            alert('Game Over!');
+                        }
+                    }, 2500);
+                }
+            }
+        });
+        if (!isColliding && collisionTimeout) {
+            clearTimeout(collisionTimeout);
+            collisionTimeout = null;
+        }
+    }
+    
+    setInterval(createBlock, 1000);
+    document.body.addEventListener('click', teleportPlayer);
+    setInterval(checkCollision, 100); 
+</script>
+
+</body>
+</html>
